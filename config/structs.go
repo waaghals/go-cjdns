@@ -13,12 +13,15 @@ type Config struct {
 	ResetAfterInactivitySeconds int            `json:"resetAfterInactivitySeconds"` //remove cryptoauth sessions after this number of seconds
 	PidFile                     string         `json:"pidFile,omitempty"`           //the file to write the PID to, if enabled (disabled by default)
 	RawSecurity                 interface{}    `json:"security"`                    //contains raw security info from the JSON that is not nicely unmarshalled
-     Security                    SecurityBlock  `json:"-"`                           //usable representation of the security info that can not be saved to JSON
+	Security                    SecurityBlock  `json:"-"`                           //usable representation of the security info that can not be saved to JSON
 	Version                     int            `json:"version"`                     //the internal config file version (mostly unused)
 }
 
 type AuthPass struct {
-	Password string `json:"password"` //the password for incoming authorization
+	Name     string `json:"name,omitempty"`     //the username or real name of the authenticated peer node's owner
+	Location string `json:"location,omitempty"` //the geographical location of the authenticated peer node
+	IPv6     string `json:"ipv6,omitempty"`     //the IPv6 used by this peer node
+	Password string `json:"password"`           //the password for incoming authorization
 }
 
 type AdminBlock struct {
@@ -39,7 +42,7 @@ type UDPInterfaceBlock struct {
 type EthInterfaceBlock struct {
 	Bind      string                `json:"bind"`      //Interface to bind to ("eth0")
 	ConnectTo map[string]Connection `json:"connectTo"` //Maps connection information to peer details, where the Key is the peer's MAC address and the Connection contains all of the information about the peer, such as password and public key
-     Beacon    int                   `json:"beacon"`    //Sets the beacon state for the ether interface. 0 = disabled, 1 = accept beacons, 2 = send and accept beacons.
+	Beacon    int                   `json:"beacon"`    //Sets the beacon state for the ether interface. 0 = disabled, 1 = accept beacons, 2 = send and accept beacons.
 }
 
 type Connection struct {
